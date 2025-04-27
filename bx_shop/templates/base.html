@@ -1,25 +1,40 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Braxton shop{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'shop/css/shop.css' %}">
+    <script src="{% static 'shop/js/formset.js' %}" defer></script>
 </head>
 <body>
-    <div class="cart">
-        {% with total_items=cart|length %}
-            {% if cart|length > 0 %}
-                Your cart:
-                <a href="{% url "cart:cart_detail" %}">
-                    {{ total_items }} item{{ total_items|pluralize }},
-                    ${{ cart.get_total_price }}ʼ
+    <header>
+        <div class="brand">
+            <a href="/" style="color: white; text-decoration: none;">Braxton Shop</a>
+        </div>
+
+        <div>
+            <div class="logo" style="background-image: url('{% static 'shop/img/logo.png' %}');"></div>
+        </div>
+
+        <div class="cart-block">
+            {% with total_items=cart|length %}
+                <a href="{% url "cart:cart_detail" %}" class="cart-link">
+                    <div class="cart-icon-wrapper">
+                        <div class="cart-icon" style="background-image: url('{% static 'shop/img/bag.png' %}');"></div>
+                        {% if total_items > 0 %}
+                            <span class="cart-count">{{ total_items }}</span>
+                        {% endif %}
+                    </div>
                 </a>
-            {% else %}
-                Your cart is empty.
-            {% endif %}
-        {% endwith %}
-    </div>
+            {% endwith %}
+        </div>
+    </header>
+
     <div id="content">
         {% block content %}{% endblock %}
     </div>
+
 </body>
 </html>

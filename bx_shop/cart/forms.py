@@ -14,5 +14,6 @@ class CartAddProductForm(forms.Form):
         super().__init__(*args, **kwargs)
         if product:
             # Set size choices dynamically from the available sizes of the product
-            self.fields['size'].choices = [('', 'Select a size')] + [(size.id, size.size) for size in product.available_sizes.all()]
-
+            size_choices = [(size.id, size.size) for size in product.available_sizes.all()]
+            self.fields['size'].choices = size_choices
+            self.fields['size'].widget.attrs.update({'data-placeholder': 'Select a size'})

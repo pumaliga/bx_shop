@@ -4,38 +4,52 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-    <div class="product-detail">
-        <h1>{{ product.name }}</h1>
-        <h2>
-            <a href="{{ product.category.get_absolute_url }}">{{product.category }}</a>
-        </h2>
-        {% if product.images.all %}
-            <div class="post-images">
-                {% for image in product.images.all %}
-                    <img src="{{ image.image.url }}" alt="Image for {{ product.name }}" class="product-image" width="300" height="300">
-                {% endfor %}
-            </div>
-            <div class="carousel-buttons">
-                <button class="prev-button">Previous</button>
-                <button class="next-button">Next</button>
-            </div>
-        {% else %}
-            <p><img src="{% static 'shop/img/no_image.png' %}" alt="Default image" width="300" height="300"></p>
-        {% endif %}
-        <p class="price">₴{{ product.price }}</p>
-        <form action="{% url "cart:cart_add" product.id %}" method="post">
-            {% csrf_token %}
-            <label for="{{ cart_product_form.size.id_for_label }}">Choose a size:</label>
-            {{ cart_product_form.size }}
-            <label for="{{ cart_product_form.quantity.id_for_label }}">Quantity:</label>
-            {{ cart_product_form.quantity }}
-            {{ cart_product_form.update }}
-            <input type="submit" value="Add to cart">
-        </form>
-        {{ product.color|linebreaks }}
-        {{ product.material_from|linebreaks }}
-        {{ product.material_inside|linebreaks }}
-        {{ product.material_sole|linebreaks }}
 
+    <div class="product-detail">
+        <div class="product-detail-wrapper">
+            <div class="product-images">
+                <div class="carousel-wrapper">
+                    {% if product.images.all %}
+                        <div class="post-images">
+                            {% for image in product.images.all %}
+                                <div class="post-image" style="background-image: url('{{ image.image.url }}');"></div>
+                            {% endfor %}
+                        </div>
+                        <div class="carousel-buttons">
+                            <button class="prev-button">Previous</button>
+                            <button class="next-button">Next</button>
+                        </div>
+                    {% else %}
+                        <div class="post-image" style="background-image: url('{% static 'shop/img/no_image.png' %}');"></div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="product-info">
+                <h1>{{ product.name }}</h1>
+                <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+                <p class="price">₴{{ product.price }}</p>
+
+                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                    {% csrf_token %}
+                    <label for="{{ cart_product_form.size.id_for_label }}">Choose a size:</label>
+                    <select name="{{ cart_product_form.size.html_name }}" id="{{ cart_product_form.size.id_for_label }}">
+                        <option value="" disabled selected>Select a size</option>
+                        {% for val, label in cart_product_form.fields.size.choices %}
+                            <option value="{{ val }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="{{ cart_product_form.quantity.id_for_label }}">Quantity:</label>
+                    {{ cart_product_form.quantity }}
+                    {{ cart_product_form.update }}
+                    <input type="submit" value="Add to cart" id="add-to-cart-button" disabled>
+                </form>
+
+                <p>{{ product.color|linebreaks }}</p>
+                <p>{{ product.material_from|linebreaks }}</p>
+                <p>{{ product.material_inside|linebreaks }}</p>
+                <p>{{ product.material_sole|linebreaks }}</p>
+            </div>
+        </div>
     </div>
 {% endblock %}
