@@ -40,7 +40,6 @@ class CartRemoveView(View):
         cart = Cart(request)
         product = get_object_or_404(Product, id=product_id)
         size = request.POST.get('size')
-        # cart.remove(product)
         cart.remove(product, size)
 
         return redirect('cart:cart_detail')

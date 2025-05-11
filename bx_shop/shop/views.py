@@ -45,10 +45,3 @@ class ProductDetailView(DetailView):
         # Passing the product to the form allows the form to access the product's available sizes
         context['cart_product_form'] = CartAddProductForm(product=product)
         return context
-
-    # def get_context_data(self, **kwargs):
-    #     """Add cart form to the context."""
-    #     context = super().get_context_data(**kwargs)
-    #     context['cart_product_form'] = CartAddProductForm()
-    #     return context
-
