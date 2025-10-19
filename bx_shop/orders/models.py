@@ -2,16 +2,33 @@ from django.db import models
 from shop.models import Product
 
 
+DELIVERY_PROVIDERS = [
+    ('nova_poshta', 'Nova Poshta'),
+    ('ukrposhta', 'Ukrposhta'),
+]
+
+DELIVERY_TYPES = [
+    ('branch', 'Branch Pickup'),
+    ('courier', 'Courier Delivery'),
+]
+
+
 class Order(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
-    address = models.CharField(max_length=250)
-    postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
+    delivery_provider = models.CharField(max_length=30, choices=DELIVERY_PROVIDERS, default='nova_poshta')
+    delivery_type = models.CharField(max_length=30, choices=DELIVERY_TYPES, default='branch')
+    # For courier delivery
+    street = models.CharField(max_length=255, blank=True, null=True)
+    house_number = models.CharField(max_length=10, blank=True, null=True)  # TODO int
+    flat_number = models.CharField(max_length=10, blank=True, null=True)
+    # For post office delivery
+    warehouse_description = models.CharField(max_length=255, blank=True, null=True)
+    postal_code = models.CharField(max_length=20, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    paid = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-created',)
