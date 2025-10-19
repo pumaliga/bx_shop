@@ -1,8 +1,9 @@
 import requests
+import os
 from django.core.cache import cache
 
 
-API_KEY = "06603b5df7cd68b4b180b003c08ce901"
+API_KEY = os.getenv('NOVA_POSHTA_API_KEY')
 BASE_URL = "https://api.novaposhta.ua/v2.0/json/"
 
 
