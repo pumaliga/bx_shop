@@ -12,6 +12,13 @@ DELIVERY_TYPES = [
     ('courier', 'Courier Delivery'),
 ]
 
+ORDER_STATUS_CHOICES = [
+    ('new', 'New'),
+    ('processing', 'Processing'),
+    ('complete', 'Complete'),
+    ('canceled', 'Canceled'),
+]
+
 
 class Order(models.Model):
     first_name = models.CharField(max_length=50)
@@ -29,6 +36,7 @@ class Order(models.Model):
     postal_code = models.CharField(max_length=20, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='new')
 
     class Meta:
         ordering = ('-created',)
